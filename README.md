@@ -1,4 +1,8 @@
-# IF3170---Artificial-Intelligence
+# IF3170-Artificial-Intelligence
 Tugas Besar 1 IF3170-AI 2016
 
-Pendigans
+Created By : 
+- Johan (13514026)
+- Yeksadiningrat (13514055)
+- Christian Anthony (13514085)
+- Kevin Supentot (13514094)
