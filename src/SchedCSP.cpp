@@ -105,6 +105,9 @@ int SchedCSP::countConflicts(){
 void SchedCSP::checkConflicts(){
 	for(int i=0;i<vars[0].size()-1;++i){
 		for(int j=i+1;j<vars[0].size();++j){
+			//reset conflict statec
+			vars[1][i].conflict = false;
+			vars[1][j].conflict = false;
 			//if room and day are equal
 			if((vars[0][i].value==vars[0][j].value)&&(vars[2][i].value==vars[2][j].value)){
 				//check the time
@@ -115,10 +118,6 @@ void SchedCSP::checkConflicts(){
 				if(a_end>b_start && a_start < b_end){
 					vars[1][i].conflict = true;
 					vars[1][j].conflict = true;
-				}
-				else {
-					vars[1][i].conflict = false;
-					vars[1][j].conflict = false;	
 				}
 			}
 		}
