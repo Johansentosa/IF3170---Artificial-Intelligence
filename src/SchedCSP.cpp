@@ -116,6 +116,10 @@ void SchedCSP::checkConflicts(){
 					vars[1][i].conflict = true;
 					vars[1][j].conflict = true;
 				}
+				else {
+					vars[1][i].conflict = false;
+					vars[1][j].conflict = false;	
+				}
 			}
 		}
 	}
