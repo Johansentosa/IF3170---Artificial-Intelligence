@@ -2,7 +2,15 @@
 //class that can read CSP from file and saves the CSP inside the object
 
 #include "SchedVar.h"
+#include <cassert>
 using namespace std;
+
+typedef struct
+{
+    string roomName;
+    int openTime, closeTime;
+    vector<Day> openDays; 
+} Room;
 
 class SchedCSP{
   public:
@@ -13,10 +21,11 @@ class SchedCSP{
     ~SchedCSP();
     
     //Getter
-    vector<vector<string>> getConstraint();
-    vector<string> getClassName();
-    vector<vector<SchedVar>> getVars();
-    int getConflicts();
+    // vector<vector<string>> getConstraint();
+    // vector<string> getClassName();
+    // vector<vector<SchedVar>> getVars();
+    // int getConflicts();
+    int getRoomIndex(string roomName);
     
     //Printer
     void printVars();
@@ -40,11 +49,14 @@ class SchedCSP{
     
   private:
     //Variables and domains
-    vector<vector<string>> constr;
+    vector<Room> constr;
     
-	//vars is different from other vectors, iterate from first index; e.g. vars[j][i]
-    vector<vector<SchedVar>> vars; //vars[0] is room, vars[1] is starting time, vars[2] is day  
-    
+	vector<SchedVar<Day>> dayVars;
+    vector<SchedVar<int>> timeVars;
+    vector<SchedVar<string>> roomVars;
+
     vector<string> classname; //class name for vars; e.g. IF2130
+    vector<int> duration;
+
     int conflicts;
 };

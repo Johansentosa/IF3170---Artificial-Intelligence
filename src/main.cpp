@@ -4,7 +4,8 @@
 using namespace std;
 
 int main(){
-	string fname = "tc1.txt";
+	srand(time(NULL));
+	string fname = "testcase/tc1.txt";
 	SchedCSP *S = new SchedCSP(fname.c_str());
 	S->printConstr();
 	cout<<endl;

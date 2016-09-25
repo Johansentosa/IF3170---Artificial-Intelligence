@@ -1,25 +1,28 @@
 //SchedVar.cpp
 #include "SchedVar.h"
 
-SchedVar::SchedVar(){
-	duration = 0;
-	value = "null";
+template <typename T>
+SchedVar<T>::SchedVar(){
 	conflict = false;
 }
 
-SchedVar::SchedVar(const SchedVar &o):domain(o.domain){
-	duration = o.duration;
-	value = o.value;
+template <typename T>
+SchedVar<T>::SchedVar(const SchedVar<T> &o):domain(o.domain){
 	conflict = o.conflict;
 }
 
-SchedVar SchedVar::operator=(const SchedVar &o){
+template <typename T>
+SchedVar<T> SchedVar<T>::operator=(const SchedVar<T> &o){
 	domain = o.domain;
-	duration = o.duration;
-	value = o.value;
 	conflict = o.conflict;
 	return *this;
 }
-SchedVar::~SchedVar(){
+
+template <typename T>
+SchedVar<T>::~SchedVar(){
 	
 }
+
+template class SchedVar<Day>;
+template class SchedVar<int>;
+template class SchedVar<string>;

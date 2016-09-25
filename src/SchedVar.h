@@ -5,18 +5,19 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "Day.h"
 using namespace std;
 
+template <typename T>
 class SchedVar{
 	public:
 		SchedVar();
-		SchedVar(const SchedVar &o);
-		SchedVar operator=(const SchedVar &o);
+		SchedVar(const SchedVar<T> &o);
+		SchedVar<T> operator=(const SchedVar<T> &o);
 		~SchedVar();
 		
 		//var
-		vector<string> domain;	
-		int duration; //only time variable will get duration, otherwise duration = 0
+		vector<T> domain;
 		bool conflict; //only time variable will get conflict, otherwise conflict = false
-		string value;
+		int selectedIndex; //selected index in domain array
 };
