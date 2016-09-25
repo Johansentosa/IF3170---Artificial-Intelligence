@@ -1,5 +1,7 @@
 //SchedCSP.h
 //class that can read CSP from file and saves the CSP inside the object
+#ifndef SCHEDCSP
+#define SCHEDCSP 
 
 #include "SchedVar.h"
 #include <cassert>
@@ -15,8 +17,9 @@ typedef struct
 class SchedCSP{
   public:
     //Set variables within the constructors. Read from test file
+    SchedCSP();
     SchedCSP(const char *fname);
-    SchedCSP(const SchedCSP &obj);
+    SchedCSP(const SchedCSP& obj);
     SchedCSP operator=(const SchedCSP &o);
     ~SchedCSP();
     
@@ -63,3 +66,4 @@ class SchedCSP{
 
     int conflicts;
 };
+#endif

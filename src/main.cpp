@@ -1,6 +1,7 @@
 //main.cpp
 #include <iostream>
 #include "SchedCSP.h"
+#include "GA.h"
 using namespace std;
 
 int main(){

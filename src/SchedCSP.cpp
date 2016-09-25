@@ -16,6 +16,7 @@ int SchedCSP::getRoomIndex(string roomName) {
 }
 
 //CTORS
+SchedCSP::SchedCSP(){}
 SchedCSP::SchedCSP(const char * fname){
 	conflicts = -1;
 	ifstream infile(fname);
