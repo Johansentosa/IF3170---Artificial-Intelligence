@@ -14,7 +14,8 @@ int main(){
 	cout<<endl;
 	S->printVars();
 	cout<<endl;
-	S->initAllVars();
+	GeneticAlgorithm G(*S);
+	S = G.getCSPSolution();
 	S->printVarValues();
 	cout<<endl;
 	cout<<S->countConflicts()<<endl;

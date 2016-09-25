@@ -19,8 +19,6 @@ class SchedCSP{
     //Set variables within the constructors. Read from test file
     SchedCSP();
     SchedCSP(const char *fname);
-    SchedCSP(SchedCSP const& obj);
-    SchedCSP operator=(const SchedCSP &o);
     ~SchedCSP();
     
     //Getter
