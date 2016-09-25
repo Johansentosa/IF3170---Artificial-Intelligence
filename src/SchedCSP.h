@@ -26,6 +26,9 @@ class SchedCSP{
     // vector<vector<SchedVar>> getVars();
     // int getConflicts();
     int getRoomIndex(string roomName);
+    vector<int> getRandomIndex();
+    void applyIndex(vector<int> v);
+    bool testIndex(vector<int> v);
     
     //Printer
     void printVars();

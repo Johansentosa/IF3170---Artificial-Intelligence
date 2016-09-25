@@ -198,9 +198,9 @@ bool SchedCSP::testIndex(vector<int> v) {
 	applyIndex(v);
 	for (int i = 0; i < timeVars.size(); ++i)
 	{
-		if (timeVars[i].selectedIndex < 0 || timeVars[j].selectedIndex >= timeVars[i].domain.size() ||
-			dayVars[i].selectedIndex < 0 || dayVars[j].selectedIndex >= dayVars[i].domain.size() ||
-			roomVars[i].selectedIndex < 0 || roomVars[j].selectedIndex >= roomVars[i].domain.size()) {
+		if (timeVars[i].selectedIndex < 0 || timeVars[i].selectedIndex >= timeVars[i].domain.size() ||
+			dayVars[i].selectedIndex < 0 || dayVars[i].selectedIndex >= dayVars[i].domain.size() ||
+			roomVars[i].selectedIndex < 0 || roomVars[i].selectedIndex >= roomVars[i].domain.size()) {
 			return false;
 		}
 
@@ -216,7 +216,7 @@ bool SchedCSP::testIndex(vector<int> v) {
 		{
 			if (selectedRoom.openDays[j] == selectedDay)
 			{
-				flag == true;
+				flag = true;
 				break;
 			}
 		}
