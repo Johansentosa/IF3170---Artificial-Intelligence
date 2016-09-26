@@ -83,11 +83,10 @@ SchedCSP* GeneticAlgorithm::getCSPSolution() {
 	initializePopulation();
 	for (int i = 0; i < GeneticAlgorithm::GENERATION; ++i)
 	{
-		// if (getLeastConflicts() == 0)
-		// {
-		// 	break;
-		// }
-		printRank();
+		if (getLeastConflicts() == 0)
+		{
+			break;
+		}
 		pair<int, int> p = selectChromosomePair();
 		crossover(p);
 		double r;
