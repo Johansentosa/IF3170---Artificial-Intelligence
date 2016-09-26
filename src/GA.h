@@ -9,9 +9,11 @@
 class GeneticAlgorithm{
   public:
     const static int POPULATION = 100;
-    const static int GENERATION = 100;
-    const static int ELITE_POPULATION = POPULATION/20;
+    const static int GENERATION = 100000;
+    const static int ELITE_POPULATION = POPULATION/5;
     constexpr const static double MUTATION_PROBABILITY = 0.05;
+    constexpr const static double CROSSOVER_RATIO = 0.5;
+
 
 
     GeneticAlgorithm(SchedCSP csp);
@@ -19,12 +21,14 @@ class GeneticAlgorithm{
     
   private:
     SchedCSP csp;
-    vector<vector<int>> indexPool;
+    vector<vector<int>> population;
     set<pair<int, int>> rank;
+    vector<int> conflictCache;
 
     void initializePopulation();
     void applyBestCandidate();
     void printRank();
+    void updatePopulationConflict(int);
     int getLeastConflicts();
     pair<int, int> selectChromosomePair();
     void crossover(pair<int,int>);

@@ -27,9 +27,11 @@ class SchedCSP{
     // vector<vector<SchedVar>> getVars();
     // int getConflicts();
     int getRoomIndex(string roomName);
+    vector<int> getIndex();
     vector<int> getRandomIndex();
     void applyIndex(vector<int> v);
     bool testIndex(vector<int> v);
+    int getCourseSize();
     
     //Printer
     void printVars();
@@ -41,11 +43,8 @@ class SchedCSP{
     vector<int> splitInt(string line, char delimiter);
     
     //Initiator
-    void initAllVars();	//initialise variables with random values
-    void initClassVar(int index);	//initialise time,day, and room var with constr check
-    void initTimeVar(int index);	//initialise variable in nth index
-    void initDayVar(int index);
-    void initRoomVar(int index);
+    void initAllVars();	//initialize all variables with random values
+    void initSingleVar(int); //initialize single variables with random values
     
     //Conflicts
     int countConflicts();	//count conflict then set conflicts

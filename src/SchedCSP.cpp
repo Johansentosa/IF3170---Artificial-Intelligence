@@ -174,8 +174,11 @@ SchedCSP::~SchedCSP(){
 // 	return conflicts;
 // }
 
-vector<int> SchedCSP::getRandomIndex() {
-	initAllVars();
+int SchedCSP::getCourseSize() {
+	return timeVars.size();
+}
+
+vector<int> SchedCSP::getIndex() {
 	vector<int> res;
 	for (int j = 0; j < timeVars.size(); ++j)
 	{
@@ -184,6 +187,11 @@ vector<int> SchedCSP::getRandomIndex() {
 		res.push_back(roomVars[j].selectedIndex);
 	}
 	return res;
+}
+
+vector<int> SchedCSP::getRandomIndex() {
+	initAllVars();
+	return getIndex();
 }
 
 void SchedCSP::applyIndex(vector<int> v) {
@@ -344,69 +352,71 @@ void SchedCSP::printVarValues(){
 void SchedCSP::initAllVars(){
 	conflicts = 0;
 	for(int i=0; i<timeVars.size(); ++i){
-		roomVars[i].selectedIndex = rand() % roomVars[i].domain.size();
+		initSingleVar(i);
+	}
+}
 
-		string selectedRoomName = roomVars[i].domain[roomVars[i].selectedIndex];
-		int roomidx;
-		roomidx = getRoomIndex(selectedRoomName);
+void SchedCSP::initSingleVar(int i) {
+	roomVars[i].selectedIndex = rand() % roomVars[i].domain.size();
 
-		//init day var
-		vector<Day> roomOpenDays = constr[roomidx].openDays;
-		vector<Day> courseAvailableDays = dayVars[i].domain;
-		bool flag[courseAvailableDays.size()]; //true when course available that day AND room open, false otherwise
-		int countAvailableDays = 0; //number flag turned on
-		for (int j = 0; j < courseAvailableDays.size(); ++j)
-		{
-			flag[j] = false;
-			Day x = courseAvailableDays[j];
-			for (int k = 0; k < roomOpenDays.size(); ++k)
-			{
-				if (roomOpenDays[k] == x)
-				{
-					flag[j] = true;
-					break;
-				}
-			}
-			if (flag[j])
-			{
-				countAvailableDays++;
-			}
-		}
-		int dayRandCount = rand() % countAvailableDays; //random day
-		for (int j = 0; j < courseAvailableDays.size(); ++j)
-		{
-			if (flag[j])
-			{
-				if (dayRandCount == 0)
-				{
-					dayVars[i].selectedIndex = j;
-					break;
-				} else {
-					dayRandCount--;
-				}
-			}
-		}
+	string selectedRoomName = roomVars[i].domain[roomVars[i].selectedIndex];
+	int roomidx;
+	roomidx = getRoomIndex(selectedRoomName);
 
-		//init time var
-		int dur = duration[i];
-		int roomOpenTime = constr[roomidx].openTime;
-		int roomCloseTime = constr[roomidx].closeTime;
-		int courseStartTime = timeVars[i].domain[0];
-		int courseEndTime = timeVars[i].domain[timeVars[i].domain.size() - 1] + dur;
-		int startTimeWindow = max(roomOpenTime, courseStartTime); //time window to random
-		int endTimeWindow = min(roomCloseTime, courseEndTime) - dur;
-		int windowSize = endTimeWindow - startTimeWindow + 1;
-		int selectedTime = startTimeWindow + rand() % windowSize;
-		for (int j = 0; j < timeVars[i].domain.size(); ++j)
+	//init day var
+	vector<Day> roomOpenDays = constr[roomidx].openDays;
+	vector<Day> courseAvailableDays = dayVars[i].domain;
+	bool flag[courseAvailableDays.size()]; //true when course available that day AND room open, false otherwise
+	int countAvailableDays = 0; //number flag turned on
+	for (int j = 0; j < courseAvailableDays.size(); ++j)
+	{
+		flag[j] = false;
+		Day x = courseAvailableDays[j];
+		for (int k = 0; k < roomOpenDays.size(); ++k)
 		{
-			if (timeVars[i].domain[j] == selectedTime)
+			if (roomOpenDays[k] == x)
 			{
-				timeVars[i].selectedIndex = j;
+				flag[j] = true;
 				break;
 			}
 		}
+		if (flag[j])
+		{
+			countAvailableDays++;
+		}
+	}
+	int dayRandCount = rand() % countAvailableDays; //random day
+	for (int j = 0; j < courseAvailableDays.size(); ++j)
+	{
+		if (flag[j])
+		{
+			if (dayRandCount == 0)
+			{
+				dayVars[i].selectedIndex = j;
+				break;
+			} else {
+				dayRandCount--;
+			}
+		}
+	}
 
-
+	//init time var
+	int dur = duration[i];
+	int roomOpenTime = constr[roomidx].openTime;
+	int roomCloseTime = constr[roomidx].closeTime;
+	int courseStartTime = timeVars[i].domain[0];
+	int courseEndTime = timeVars[i].domain[timeVars[i].domain.size() - 1] + dur;
+	int startTimeWindow = max(roomOpenTime, courseStartTime); //time window to random
+	int endTimeWindow = min(roomCloseTime, courseEndTime) - dur;
+	int windowSize = endTimeWindow - startTimeWindow + 1;
+	int selectedTime = startTimeWindow + rand() % windowSize;
+	for (int j = 0; j < timeVars[i].domain.size(); ++j)
+	{
+		if (timeVars[i].domain[j] == selectedTime)
+		{
+			timeVars[i].selectedIndex = j;
+			break;
+		}
 	}
 }
 
