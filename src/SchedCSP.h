@@ -49,6 +49,7 @@ class SchedCSP{
     //Conflicts
     int countConflicts();	//count conflict then set conflicts
     void checkConflicts();	//check variables, if conflicting each other, set SchedVar bool conflict true
+    int findFirstConflicts();	//return first-found index of conflict, if no conflict return -1
     
   private:
     //Variables and domains

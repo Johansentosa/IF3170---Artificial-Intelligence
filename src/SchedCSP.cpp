@@ -287,6 +287,23 @@ void SchedCSP::checkConflicts(){
 	}
 }
 
+int SchedCSP::findFirstConflicts(){
+	int idx = 0;
+	for (int i = 0; i < timeVars.size(); ++i)
+	{
+		timeVars[i].conflict = false;
+	}
+	checkConflicts();
+	for (int i = 0; i < timeVars.size(); ++i)
+	{
+		if (timeVars[i].conflict)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
 void SchedCSP::printVars(){
 	cout<<"Printing All Variables Domain"<<endl;
 	for (int j = 0; j < timeVars.size(); ++j)
