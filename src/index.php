@@ -44,18 +44,38 @@
 
             <script type="text/javascript">
                 
-                               
                 var dp = new DayPilot.Calendar("dp");
-				
+				dp.init();
                 dp.viewType = "Resources";
 				dp.theme="calendar_traditional";
 				dp.columns = [
-				  { name: "Monday", id: "A" },
-				  { name: "Tuesday", id: "B" },
-				  { name: "Wednesday", id: "C" },
-				  { name: "Thrusday", id: "D" },
-				  { name: "Friday", id: "E" }
+				  { name: "Monday", id: "1", start: "2013-03-25" },
+				  { name: "Tuesday", id: "2", start: "2013-03-25"},
+				  { name: "Wednesday", id: "3", start: "2013-03-25" },
+				  { name: "Thrusday", id: "4",start: "2013-03-25" },
+				  { name: "Friday", id: "5", start: "2013-03-25" }
 				];
+				
+				dp.events.list = [
+				{
+				  start: "2013-03-25T07:00:00",
+				  end: "2013-03-25T14:00:00",
+				  id: "1",
+				  text: "Event 1",
+				  resource: "2"
+				},
+				{
+				  start: "2013-03-25T15:00:00",
+				  end: "2013-03-25T17:00:00",
+				  id: "2",
+				  text: "Event 2",
+				  resource: "5"
+				}
+				];
+				dp.update();
+				
+                dp.events.add(e);
+								
 								
 				dp.onEventMoved = function (args) {
                     $.post("backend_move.php", 
@@ -82,7 +102,7 @@
                 };
 
                 // event creating
-                dp.onTimeRangeSelected = function (args) {
+                /*dp.onTimeRangeSelected = function (args) {
                     var name = prompt("New event name:", "Event");
                     dp.clearSelection();
                     if (!name) return;
@@ -104,8 +124,7 @@
                             function() {
                                 console.log("Created.");
                             });
-
-                };
+                };*/
 
                 dp.onEventClick = function(args) {
                     alert("clicked: " + args.e.id());
