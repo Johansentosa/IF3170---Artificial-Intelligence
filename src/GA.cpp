@@ -57,18 +57,44 @@ void GeneticAlgorithm::crossover(pair<int,int> p) {
 	int courseSize = csp.getCourseSize();
 	int popA = p.first;
 	int popB = p.second;
+	vector<int> newPopA, newPopB;
 	for (int i = 0; i < courseSize; ++i)
 	{
 		double r;
 		r = (double)rand() / RAND_MAX; // probability type random, 0 sampe 1
 		if (r < GeneticAlgorithm::CROSSOVER_RATIO) {
-			swap(population[popA][i], population[popB][i]);
+			newPopA.push_back(population[popA][3*i+0]);
+			newPopA.push_back(population[popA][3*i+1]);
+			newPopA.push_back(population[popA][3*i+2]);
+
+			newPopB.push_back(population[popB][3*i+0]);
+			newPopB.push_back(population[popB][3*i+1]);
+			newPopB.push_back(population[popB][3*i+2]);
+		} else {
+			newPopA.push_back(population[popB][3*i+0]);
+			newPopA.push_back(population[popB][3*i+1]);
+			newPopA.push_back(population[popB][3*i+2]);
+
+			newPopB.push_back(population[popA][3*i+0]);
+			newPopB.push_back(population[popA][3*i+1]);
+			newPopB.push_back(population[popA][3*i+2]);
 		}
 	}
-	csp.applyIndex(population[popA]);
-	updatePopulationConflict(popA);
-	csp.applyIndex(population[popB]);
-	updatePopulationConflict(popB);
+	int conflict;
+	assert(csp.testIndex(newPopA) && csp.testIndex(newPopB));
+
+	//Add crossover population
+	csp.applyIndex(newPopA);
+	population.push_back(newPopA);
+	conflict = csp.countConflicts();
+	conflictCache.push_back(conflict);
+	rank.insert(make_pair(conflict, population.size() - 1));
+
+	csp.applyIndex(newPopB);
+	population.push_back(newPopB);
+	conflict = csp.countConflicts();
+	conflictCache.push_back(conflict);
+	rank.insert(make_pair(conflict, population.size() - 1));
 }
 
 void GeneticAlgorithm::mutate(int i) {
@@ -79,25 +105,63 @@ void GeneticAlgorithm::mutate(int i) {
 	updatePopulationConflict(i);
 }
 
+void GeneticAlgorithm::cullPopulation() {
+	set<pair<int,int>>::iterator it = rank.end();
+	vector<int> indexToCull;
+	for (int i = 0; i < GeneticAlgorithm::EXTRA_POPULATION; ++i)
+	{
+		it--;
+		int popIndex = it->second;
+		indexToCull.push_back(popIndex);
+	}
+	sort(indexToCull.begin(), indexToCull.end());
+	for (int i = 0; i < GeneticAlgorithm::EXTRA_POPULATION; ++i)
+	{
+		int popIndex = indexToCull[i];
+		popIndex -= i;
+		population.erase(population.begin() + popIndex);
+		conflictCache.erase(conflictCache.begin() + popIndex);
+	}
+		
+}
+
+void GeneticAlgorithm::rerankPopulation() {
+	set<pair<int,int>> newRank;
+	for (int i = 0; i < GeneticAlgorithm::POPULATION; ++i)
+	{
+		csp.applyIndex(population[i]);
+		int conflict = csp.countConflicts();
+		conflictCache[i] = conflict;
+		newRank.insert(make_pair(conflict, i));
+	}
+	rank = newRank;
+}
+
 SchedCSP* GeneticAlgorithm::getCSPSolution() {
 	initializePopulation();
 	for (int i = 0; i < GeneticAlgorithm::GENERATION; ++i)
 	{
-		if (getLeastConflicts() == 0)
+		printRank();
+		// if (getLeastConflicts() == 0)
+		// {
+		// 	break;
+		// }
+		for (int i = 0; i < GeneticAlgorithm::EXTRA_POPULATION / 2; ++i)
 		{
-			break;
+			pair<int, int> p = selectChromosomePair();
+			crossover(p); // every crossover generate 2 pops
+			double r;
+			r = (double)rand() / RAND_MAX; // probability type random, 0 sampe 1
+			if (r < GeneticAlgorithm::MUTATION_PROBABILITY) {
+				mutate(p.first);
+			}
+			r = (double)rand() / RAND_MAX; // probability type random, 0 sampe 1
+			if (r < GeneticAlgorithm::MUTATION_PROBABILITY) {
+				mutate(p.second);
+			}
 		}
-		pair<int, int> p = selectChromosomePair();
-		crossover(p);
-		double r;
-		r = (double)rand() / RAND_MAX; // probability type random, 0 sampe 1
-		if (r < GeneticAlgorithm::MUTATION_PROBABILITY) {
-			mutate(p.first);
-		}
-		r = (double)rand() / RAND_MAX; // probability type random, 0 sampe 1
-		if (r < GeneticAlgorithm::MUTATION_PROBABILITY) {
-			mutate(p.second);
-		}
+		cullPopulation();
+		rerankPopulation();
 	}
 	applyBestCandidate();
 	return &csp;

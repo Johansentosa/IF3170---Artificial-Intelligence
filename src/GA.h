@@ -9,8 +9,9 @@
 class GeneticAlgorithm{
   public:
     const static int POPULATION = 100;
-    const static int GENERATION = 100000;
+    const static int GENERATION = 1000;
     const static int ELITE_POPULATION = POPULATION/5;
+    const static int EXTRA_POPULATION = POPULATION;
     constexpr const static double MUTATION_PROBABILITY = 0.05;
     constexpr const static double CROSSOVER_RATIO = 0.5;
 
@@ -33,5 +34,7 @@ class GeneticAlgorithm{
     pair<int, int> selectChromosomePair();
     void crossover(pair<int,int>);
     void mutate(int);
+    void cullPopulation();
+    void rerankPopulation();
 };
 #endif
