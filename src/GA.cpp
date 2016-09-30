@@ -142,10 +142,10 @@ SchedCSP* GeneticAlgorithm::getCSPSolution() {
 	for (int i = 0; i < GeneticAlgorithm::GENERATION; ++i)
 	{
 		printRank();
-		// if (getLeastConflicts() == 0)
-		// {
-		// 	break;
-		// }
+		if (getLeastConflicts() == 0)
+		{
+			break;
+		}
 		for (int i = 0; i < GeneticAlgorithm::EXTRA_POPULATION / 2; ++i)
 		{
 			pair<int, int> p = selectChromosomePair();
