@@ -3,23 +3,25 @@
 #include "SchedCSP.h"
 #include "GA.h"
 #include "HC.h"
+#include "SA.h"
+#include <ctime>
 using namespace std;
 
 int main(){
-	//srand(time(NULL));
+	srand(time(NULL));
 	string fname = "testcase/tc1.txt";
 	SchedCSP *S = new SchedCSP(fname.c_str());
-	S->printConstr();
+	//S->printConstr();
 	cout<<endl;
 	cout<<"done"<<endl;
 	cout<<endl;
-	S->printVars();
+	//S->printVars();
 	cout<<endl;/*
 	GeneticAlgorithm G(*S);
 	S = G.getCSPSolution();*/
-	HillClimb H(*S);
+	SimulatedAnnealing H(*S);
 	S = H.getSolution();	
-	S->printVarValues();
+	//S->printVarValues();
 	cout<<endl;
 	cout<<S->countConflicts()<<endl;
 	
