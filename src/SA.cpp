@@ -35,7 +35,7 @@ SchedCSP* SimulatedAnnealing::getSolution(){
 		else{
 			counter++;
 		}
-		cout<<csp.countConflicts()<<endl;
+		//cout<<csp.countConflicts()<<endl;
 		//cout<<"this is probability"<<acceptance(delta,Temperature(1,counter))<<endl;
 		//cout<<"this is rng"<<rng()<<endl;
 	}

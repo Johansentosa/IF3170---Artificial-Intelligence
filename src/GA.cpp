@@ -25,9 +25,9 @@ void GeneticAlgorithm::printRank() {
 	for (std::set<pair<int,int>>::iterator i = rank.begin(); i != rank.end(); ++i)
 	{
 		pair<int, int> element = *i;
-		printf("%d", element.first);
+		//printf("%d", element.first);
 	}
-	printf("\n");
+	//printf("\n");
 }
 
 int GeneticAlgorithm::getLeastConflicts() {

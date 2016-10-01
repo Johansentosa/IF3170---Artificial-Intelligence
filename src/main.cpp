@@ -12,18 +12,17 @@ int main(){
 	string fname = "testcase/tc1.txt";
 	SchedCSP *S = new SchedCSP(fname.c_str());
 	//S->printConstr();
-	cout<<endl;
-	cout<<"done"<<endl;
-	cout<<endl;
+
 	//S->printVars();
-	cout<<endl;/*
-	GeneticAlgorithm G(*S);
-	S = G.getCSPSolution();*/
-	SimulatedAnnealing H(*S);
-	S = H.getSolution();	
-	//S->printVarValues();
-	cout<<endl;
-	cout<<S->countConflicts()<<endl;
 	
+	//GeneticAlgorithm G(*S);
+	//S = G.getCSPSolution();
+	//SimulatedAnnealing H(*S);
+	//S = H.getSolution();
+	HillClimb H(*S);
+	S = H.getSolution();
+	cout<<"Conflict,"<<S->countConflicts()<<endl;	
+	cout<<"class,time,room,day,duration"<<endl;
+	S->print4PHP();
 	return 0;
 }

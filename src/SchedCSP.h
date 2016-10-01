@@ -37,6 +37,7 @@ class SchedCSP{
     void printVars();
     void printConstr();
     void printVarValues();
+    void print4PHP();
     
     //Splitter
     vector<string> splitString(string line, char delimiter);
