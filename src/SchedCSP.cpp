@@ -365,6 +365,15 @@ void SchedCSP::printVarValues(){
 	}
 }
 
+void SchedCSP::print4PHP(){
+	for (int j = 0; j < timeVars.size(); ++j)
+	{
+		int day = getDay(dayVars[j].domain[dayVars[j].selectedIndex]);
+		cout<<classname[j] <<','<< timeVars[j].domain[timeVars[j].selectedIndex]<<','<<roomVars[j].domain[roomVars[j].selectedIndex]<<','<<day<<','<<duration[j]<<endl;
+	}
+}
+
+
 //Initiator
 void SchedCSP::initAllVars(){
 	conflicts = 0;

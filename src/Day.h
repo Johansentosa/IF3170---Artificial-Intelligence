@@ -15,4 +15,13 @@ inline void printDay(Day x) {
 	}
 }
 
+inline int getDay(Day x){
+	switch (x) {
+		case Day::MONDAY: return 1;
+		case Day::TUESDAY: return 2;
+		case Day::WEDNESDAY: return 3;
+		case Day::THURSDAY: return 4;
+		case Day::FRIDAY: return 5;
+	}
+}
 #endif

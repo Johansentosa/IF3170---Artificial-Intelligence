@@ -19,7 +19,7 @@ SchedCSP* HillClimb::getSolution(){
 		else{
 			counter++;
 		}
-		cout<<csp.countConflicts()<<endl;
+		//cout<<csp.countConflicts()<<endl;
 	}
 
 	return &csp;

@@ -5,6 +5,7 @@
 
 #include "SchedCSP.h"
 #include <set>
+#include <algorithm>
 
 class GeneticAlgorithm{
   public:
