@@ -158,7 +158,7 @@
 							<div class="check"><div class="inside"></div></div>
 						</li>
 					</ul> 
-				
+					<input id ="fname" name="fname" type="text" placeholder="Insert filename or path">
 					<div id="success"></div>
 					<div class="row">
 						<div class="form-group col-xs-12">
@@ -192,19 +192,19 @@
 				<?php
 					if ($_SERVER["REQUEST_METHOD"] == "GET"){
 						$algo= $_GET["radio-group"];
-					
+						$fname = $_GET["fname"];
 						if ($algo=="GA"){
-							exec('bin\GA', $out, $exitcode);								
+							exec('../bin/main GA '.$fname, $out, $exitcode);								
 						}
 						else if($algo=="SA"){
-							exec('bin\SA', $out, $exitcode);
+							exec('../bin/main SA '.$fname, $out, $exitcode);
 						}
-						else{
-							exec('bin\HC', $out, $exitcode);
+						else if($algo=="HC"){
+							exec('../bin/main HC '.$fname, $out, $exitcode);
 						}
 					}
 					if($exitcode!=0){
-						echo 'alert("Error Tot!! Error: '.$exitcode.'")';
+						echo 'alert("Error!! Error: '.$exitcode.'")';
 					}
 				?>
 					
@@ -219,7 +219,7 @@
 						} 
 						else{
 							$color = 0;
-							for($i=2; $i<sizeof($out);$i++){
+							for($i=3; $i<sizeof($out);$i++){
 								$plus = 360/sizeof($out);
 								$var = explode(",", $out[$i]);
 								if ((int)$var[1]<10){
@@ -232,7 +232,7 @@
 									$endtime= "0".$endtime;
 								}
 								
-								if ($i==2){
+								if ($i==3){
 									echo '{ start: "2013-03-25T'.$starttime.':00:00",';
 									echo 'end: "2013-03-25T'.$endtime.':00:00",';
 									echo 'id: "'.$id.'",';
@@ -347,7 +347,9 @@
             </script>
 			<div style="margin-left: 70px"><h2><?php
 				$var = explode(",", $out[0]);
-				echo "Jumlah Konflik = ".$var[1];
+				$eff = explode(",", $out[1]);
+				echo "Jumlah Konflik = ".$var[1]."<br>";
+				echo "Keefektivan = ".$eff[1]."%<br>";
 			?></h2>
 			</div>
 			

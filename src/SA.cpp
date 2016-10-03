@@ -7,12 +7,12 @@ float SimulatedAnnealing::Temperature(float T,int count){
 };
 
 float SimulatedAnnealing::acceptance(int delta, float temperature){
-	return 1/(1+exp(-delta/temperature));
+	return ((float)1)/((float)(1+exp(-delta/temperature)));
 };
 
 float SimulatedAnnealing::rng(){
 	int r = rand()%100000;
-	return (float)r/100000;
+	return ((float)r)/((float)100000);
 }
 
 SchedCSP* SimulatedAnnealing::getSolution(){
@@ -30,7 +30,9 @@ SchedCSP* SimulatedAnnealing::getSolution(){
 		if((newConflict < conflict)||(rng()>acceptance(delta,Temperature(T,counter)))){
 			idxConflict = csp.findFirstConflicts();
 			conflict = newConflict;
-			counter = 0;
+			if(delta>0){
+				counter = 0;
+			}
 		}
 		else{
 			counter++;

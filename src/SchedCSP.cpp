@@ -446,6 +446,21 @@ void SchedCSP::initSingleVar(int i) {
 	}
 }
 
+float SchedCSP::getEffectiveness(){
+	int totalhour = 0;
+	int totalused = 0;
+	for (int i = 0; i < duration.size(); ++i)
+	{
+		totalused = totalused + duration[i];
+	}
+	for (int i = 0; i < constr.size(); ++i)
+	{
+		int days = constr[i].openDays.size();
+		totalhour = totalhour + (constr[i].closeTime - constr[i].openTime)*days;
+	}
+	return ((float)(totalused)/(float)(totalhour))*100;
+}
+
 //Splitter
 vector<string> SchedCSP::splitString(string line, char delimiter){
 	vector<string> vect;

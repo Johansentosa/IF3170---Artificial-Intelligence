@@ -52,6 +52,8 @@ class SchedCSP{
     void checkConflicts();	//check variables, if conflicting each other, set SchedVar bool conflict true
     int findFirstConflicts();	//return first-found index of conflict, if no conflict return -1
     
+    float getEffectiveness();
+    
   private:
     //Variables and domains
     vector<Room> constr;
