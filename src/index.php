@@ -1,8 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>HTML5 Event Calendar</title>
-	<!-- demo stylesheet -->
+    <title>Jadwal Mata Kuliah Teknink Informatika</title>
     	<link type="text/css" rel="stylesheet" href="media/layout.css" />    
 
         <link type="text/css" rel="stylesheet" href="themes/calendar_g.css" />    
@@ -19,11 +18,11 @@
 	
 </head>
 <body>
-        <div id="header">
+	        <div id="header">
 			<div class="bg-help">
 				<div class="inBox">
-					<h1 id="logo"><a href='http://code.daypilot.org/17910/html5-event-calendar-open-source'>HTML5 Event Calendar</a></h1>
-					<p id="claim">AJAX Calendar/Scheduling Widgets for JavaScript/HTML5/jQuery</p>
+					<h1 id="logo"><a href='http://code.daypilot.org/17910/html5-event-calendar-open-source'>JADWAL MATA KULIAH TEKNIK INFORMATIKA</a></h1>
+					<p id="claim">By : Johan</p>
 					<hr class="hidden" />
 				</div>
 			</div>
@@ -33,11 +32,10 @@
         </div>
         <div class="main">
             
-            <div style="float:left; width: 160px;">
+            <div style="float:left; width: 130px;">
                 <div id="nav"></div>
             </div>
-            <div style="margin-left: 160px;">
-			
+            <div style="margin-left: 70px;">
 				<div class="space"><b> Jadwal Mata Kuliah Teknik Informatika </div>
                 <div id="dp"></div>
             </div>
@@ -57,25 +55,65 @@
 				];
 				
 				dp.events.list = [
+					<?php
+						exec('GA', $out);
+						
+						$id=1;
+						
+						if (sizeof($out)==0){
+														
+						} 
+						else{
+							for($i=2; $i<sizeof($out);$i++){
+								$var = explode(",", $out[$i]);
+								if ((int)$var[1]<10){
+									$starttime= "0".$var[1];
+								}
+								$endtime = (int)$starttime+(int)$var[4];
+								if ((int)$endtime<10){
+									$endtime= "0".$endtime;
+								}
+								if ($i==2){
+									echo '{ start: "2013-03-25T'.$starttime.':00:00",';
+									echo 'end: "2013-03-25T'.$endtime.':00:00",';
+									echo 'id: "'.$id.'",';
+									echo 'text: "'.$var[0].'<br>'.'R'.$var[2].'",';
+									echo 'resource: "'.$var[3].'"}';
+									$id++;
+								}else{
+									echo ',{ start: "2013-03-25T'.$starttime.':00:00",';
+									echo 'end: "2013-03-25T'.$endtime.':00:00",';
+									echo 'id: "'.$id.'",';
+									echo 'text: "'.$var[0].'<br>'.'R'.$var[2].'",';
+									echo 'resource: "'.$var[3].'"}';
+									$id++;
+								}
+							}
+						}
+								
+					?>
+					
+				];
+				
+				/*dp.events.list = [
 				{
 				  start: "2013-03-25T07:00:00",
 				  end: "2013-03-25T14:00:00",
 				  id: "1",
-				  text: "Event 1",
-				  resource: "2"
+				  text: "IF1234 - Penteel Resource <br> R7602",
+				  resource: "3"
 				},
 				{
 				  start: "2013-03-25T15:00:00",
 				  end: "2013-03-25T17:00:00",
 				  id: "2",
-				  text: "Event 2",
+				  text: "IF5678 - Kripto <br> R7606",
 				  resource: "5"
 				}
-				];
+				];*/
 				dp.update();
 				
                 dp.events.add(e);
-								
 								
 				dp.onEventMoved = function (args) {
                     $.post("backend_move.php", 
