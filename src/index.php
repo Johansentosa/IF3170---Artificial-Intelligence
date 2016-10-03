@@ -193,13 +193,13 @@
 							$algo= $_GET["radio-group"];
 						
 							if ($algo=="GA"){
-								exec('GA', $out);								
+								exec('bin\GA', $out);								
 							}
 							else if($algo=="SA"){
-								exec('SA', $out);
+								exec('bin\SA', $out);
 							}
 							else{
-								exec('HC', $out);
+								exec('bin\HC', $out);
 							}
 						}
 						$id=1;
