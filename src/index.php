@@ -169,6 +169,9 @@
 					</div>
 				</form><br><br>
             </div>
+			<div>
+				
+			</div>
 			
 			
 
@@ -221,6 +224,8 @@
 								$var = explode(",", $out[$i]);
 								if ((int)$var[1]<10){
 									$starttime= "0".$var[1];
+								} else {
+									$starttime = $var[1];
 								}
 								$endtime = (int)$starttime+(int)$var[4];
 								if ((int)$endtime<10){
@@ -345,6 +350,7 @@
 				echo "Jumlah Konflik = ".$var[1];
 			?></h2>
 			</div>
+			
         </div>
         <div class="clear">
         </div>
