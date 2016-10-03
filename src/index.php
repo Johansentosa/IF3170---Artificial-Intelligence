@@ -167,7 +167,7 @@
 						</div>
 
 					</div>
-				</form>
+				</form><br><br>
             </div>
 			
 			
@@ -186,29 +186,38 @@
 				  { name: "Friday", id: "5", start: "2013-03-25" }
 				];
 				
-				dp.events.list = [
-					<?php
-						
-						if ($_SERVER["REQUEST_METHOD"] == "GET"){
-							$algo= $_GET["radio-group"];
-						
-							if ($algo=="GA"){
-								exec('bin\GA', $out);								
-							}
-							else if($algo=="SA"){
-								exec('bin\SA', $out);
-							}
-							else{
-								exec('bin\HC', $out);
-							}
+				<?php
+					if ($_SERVER["REQUEST_METHOD"] == "GET"){
+						$algo= $_GET["radio-group"];
+					
+						if ($algo=="GA"){
+							exec('bin\GA', $out, $exitcode);								
 						}
+						else if($algo=="SA"){
+							exec('bin\SA', $out, $exitcode);
+						}
+						else{
+							exec('bin\HC', $out, $exitcode);
+						}
+					}
+					if($exitcode!=0){
+						echo 'alert("Error Tot!! Error: '.$exitcode.'")';
+					}
+				?>
+					
+				
+				dp.events.list = [
+					<?php					
+		
 						$id=1;
 						
 						if (sizeof($out)==0){
 														
 						} 
 						else{
+							$color = 0;
 							for($i=2; $i<sizeof($out);$i++){
+								$plus = 360/sizeof($out);
 								$var = explode(",", $out[$i]);
 								if ((int)$var[1]<10){
 									$starttime= "0".$var[1];
@@ -217,28 +226,32 @@
 								if ((int)$endtime<10){
 									$endtime= "0".$endtime;
 								}
+								
 								if ($i==2){
 									echo '{ start: "2013-03-25T'.$starttime.':00:00",';
 									echo 'end: "2013-03-25T'.$endtime.':00:00",';
 									echo 'id: "'.$id.'",';
 									echo 'text: "'.$var[0].'<br>'.'R'.$var[2].'",';
-									echo 'resource: "'.$var[3].'"}';
+									echo 'resource: "'.$var[3].'",';
+									echo 'backColor : "hsl('.$color.',100%,50%)"}';
 									$id++;
+									$color = $color+$plus;
 								}else{
 									echo ',{ start: "2013-03-25T'.$starttime.':00:00",';
 									echo 'end: "2013-03-25T'.$endtime.':00:00",';
 									echo 'id: "'.$id.'",';
 									echo 'text: "'.$var[0].'<br>'.'R'.$var[2].'",';
-									echo 'resource: "'.$var[3].'"}';
+									echo 'resource: "'.$var[3].'",';
+									echo 'backColor : "hsl('.$color.',100%,50%)"}';
 									$id++;
+									$color = $color+$plus;
 								}
 							}
 						}
 								
 					?>
 					
-				];
-				
+				];			
 				
 				dp.update();
 				
@@ -327,7 +340,11 @@
                 });
             });  
             </script>
-
+			<div style="margin-left: 70px"><h2><?php
+				$var = explode(",", $out[0]);
+				echo "Jumlah Konflik = ".$var[1];
+			?></h2>
+			</div>
         </div>
         <div class="clear">
         </div>
