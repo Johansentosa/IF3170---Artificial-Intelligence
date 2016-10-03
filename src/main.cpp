@@ -14,14 +14,14 @@ int main(){
 	//S->printConstr();
 
 	//S->printVars();
-	
+
 	//GeneticAlgorithm G(*S);
 	//S = G.getCSPSolution();
-	//SimulatedAnnealing H(*S);
-	//S = H.getSolution();
-	HillClimb H(*S);
+	SimulatedAnnealing H(*S);
 	S = H.getSolution();
-	cout<<"Conflict,"<<S->countConflicts()<<endl;	
+	//HillClimb H(*S);
+	//S = H.getSolution();
+	cout<<"Conflict,"<<S->countConflicts()<<endl;
 	cout<<"class,time,room,day,duration"<<endl;
 	S->print4PHP();
 	return 0;
