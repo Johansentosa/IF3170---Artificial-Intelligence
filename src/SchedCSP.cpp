@@ -15,6 +15,17 @@ int SchedCSP::getRoomIndex(string roomName) {
 	assert(false && "Room not found");
 }
 
+int SchedCSP::getRoomIndexFrom(string roomName, int start) {
+	for (int i = start + 1; i < constr.size(); ++i)
+	{
+		if (constr[i].roomName == roomName)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
 //CTORS
 SchedCSP::SchedCSP(){}
 SchedCSP::SchedCSP(const char * fname){
@@ -26,7 +37,6 @@ SchedCSP::SchedCSP(const char * fname){
 	//Input Ruangan
 	getline(infile, line);
 	if(line.substr(0,7)=="Ruangan"){
-		
 		while(1){
 			getline(infile, line);
 			if(line.substr(0,6)=="Jadwal"){
@@ -61,18 +71,20 @@ SchedCSP::SchedCSP(const char * fname){
 		classname.push_back(v[0]);
 		SchedVar<Day> day;
 		SchedVar<int> time;
-		SchedVar<string> room;
+		SchedVar<int> room;
 		//room
 		if(v[1]=="-"){
 			for(int i=0; i<constr.size();++i){
-				room.domain.push_back(constr[i].roomName);
+				room.domain.push_back(i);
 			}
 		} else {
 			vector<string> vv = splitString(v[1],',');
-			if(vv.size()>1){
-				room.domain.push_back(v[1]);
-			} else {
-				room.domain = vv;
+			for (int i = 0; i < vv.size(); ++i)
+			{
+				int roomidx = -1;
+				while ((roomidx = getRoomIndexFrom(vv[i],roomidx)) != -1){
+					room.domain.push_back(roomidx);
+				}
 			}
 		}
 		
@@ -101,13 +113,10 @@ SchedCSP::SchedCSP(const char * fname){
 		}
 
 		//Cross check with room availibilty, remove room if room *absolutely* cannot satisfy course schedule
-		vector<string> availableRoom;
+		vector<int> availableRoom;
 		for (int i = 0; i < room.domain.size(); ++i)
 		{
-			string selectedRoomName = room.domain[i];
-			int roomidx;
-			roomidx = getRoomIndex(selectedRoomName);
-
+			int roomidx = room.domain[i];
 			//check day availibilty
 			vector<Day> roomOpenDays = constr[roomidx].openDays;
 			bool flag = false;
@@ -138,9 +147,14 @@ SchedCSP::SchedCSP(const char * fname){
 			{
 				if (max(constr[roomidx].openTime, start) + dur <= min(constr[roomidx].closeTime, end)) // if course at least can fit into the cross section
 				{
-					availableRoom.push_back(selectedRoomName);
+					availableRoom.push_back(roomidx);
 				} 
 			}
+
+		}
+		if (availableRoom.size() == 0)
+		{
+			printf("%s\n", line.c_str());
 		}
 		assert(availableRoom.size() != 0 && "There's no possible room to accomodate a course");
 		room.domain = availableRoom;
@@ -214,12 +228,12 @@ bool SchedCSP::testIndex(vector<int> v) {
 			return false;
 		}
 
-		string selectedRoomName = roomVars[i].domain[roomVars[i].selectedIndex];
+		int selectedRoomIndex = roomVars[i].domain[roomVars[i].selectedIndex];
 		Day selectedDay = dayVars[i].domain[dayVars[i].selectedIndex];
 		int selectedTime = timeVars[i].domain[timeVars[i].selectedIndex];
 
 		int roomidx;
-		roomidx = getRoomIndex(selectedRoomName);
+		roomidx = selectedRoomIndex;
 		Room selectedRoom = constr[roomidx];
 		bool flag = false;
 		for (int j = 0; j < selectedRoom.openDays.size(); ++j)
@@ -268,8 +282,8 @@ void SchedCSP::checkConflicts(){
 			//if room and day are equal
 			Day dayI = dayVars[i].domain[dayVars[i].selectedIndex];
 			Day dayJ = dayVars[j].domain[dayVars[j].selectedIndex];
-			string roomI = roomVars[i].domain[roomVars[i].selectedIndex];
-			string roomJ = roomVars[j].domain[roomVars[j].selectedIndex];
+			int roomI = roomVars[i].domain[roomVars[i].selectedIndex];
+			int roomJ = roomVars[j].domain[roomVars[j].selectedIndex];
 			if(dayI == dayJ && roomI == roomJ){
 				//check the time
 				int startI = timeVars[i].domain[timeVars[i].selectedIndex];
@@ -385,9 +399,8 @@ void SchedCSP::initAllVars(){
 void SchedCSP::initSingleVar(int i) {
 	roomVars[i].selectedIndex = rand() % roomVars[i].domain.size();
 
-	string selectedRoomName = roomVars[i].domain[roomVars[i].selectedIndex];
 	int roomidx;
-	roomidx = getRoomIndex(selectedRoomName);
+	roomidx =roomVars[i].domain[roomVars[i].selectedIndex];
 
 	//init day var
 	vector<Day> roomOpenDays = constr[roomidx].openDays;
