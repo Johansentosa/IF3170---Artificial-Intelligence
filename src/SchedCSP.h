@@ -27,6 +27,7 @@ class SchedCSP{
     // vector<vector<SchedVar>> getVars();
     // int getConflicts();
     int getRoomIndex(string roomName);
+    int getRoomIndexFrom(string, int);
     vector<int> getIndex();
     vector<int> getRandomIndex();
     void applyIndex(vector<int> v);
@@ -58,7 +59,7 @@ class SchedCSP{
     
 	vector<SchedVar<Day>> dayVars;
     vector<SchedVar<int>> timeVars;
-    vector<SchedVar<string>> roomVars;
+    vector<SchedVar<int>> roomVars;
 
     vector<string> classname; //class name for vars; e.g. IF2130
     vector<int> duration;
