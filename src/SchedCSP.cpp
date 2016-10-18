@@ -4,6 +4,8 @@
 #include <time.h>
 using namespace std;
 
+int conflictBangke;
+
 int SchedCSP::getRoomIndex(string roomName) {
 	for (int i = 0; i < constr.size(); ++i)
 	{
@@ -65,6 +67,7 @@ SchedCSP::SchedCSP(const char * fname){
 		}
 	}
 	
+	conflictBangke = 0;
 	//Input Jadwal
 	while(getline(infile, line)){
 		vector<string> v = splitString(line,';');
@@ -155,14 +158,16 @@ SchedCSP::SchedCSP(const char * fname){
 		if (availableRoom.size() == 0)
 		{
 			printf("%s\n", line.c_str());
+			conflictBangke++;
+		} else {
+			room.domain = availableRoom;
+			duration.push_back(dur);
+			dayVars.push_back(day);
+			roomVars.push_back(room);
+			timeVars.push_back(time);
 		}
-		assert(availableRoom.size() != 0 && "There's no possible room to accomodate a course");
-		room.domain = availableRoom;
-
-		duration.push_back(dur);
-		dayVars.push_back(day);
-		roomVars.push_back(room);
-		timeVars.push_back(time);
+		//assert(availableRoom.size() != 0 && "There's no possible room to accomodate a course");
+		
 	}
 }
 
