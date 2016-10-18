@@ -282,8 +282,8 @@ void SchedCSP::checkConflicts(){
 			//if room and day are equal
 			Day dayI = dayVars[i].domain[dayVars[i].selectedIndex];
 			Day dayJ = dayVars[j].domain[dayVars[j].selectedIndex];
-			int roomI = roomVars[i].domain[roomVars[i].selectedIndex];
-			int roomJ = roomVars[j].domain[roomVars[j].selectedIndex];
+			string roomI = constr[roomVars[i].domain[roomVars[i].selectedIndex]].roomName;
+			string roomJ = constr[roomVars[j].domain[roomVars[j].selectedIndex]].roomName;
 			if(dayI == dayJ && roomI == roomJ){
 				//check the time
 				int startI = timeVars[i].domain[timeVars[i].selectedIndex];
@@ -383,7 +383,7 @@ void SchedCSP::print4PHP(){
 	for (int j = 0; j < timeVars.size(); ++j)
 	{
 		int day = getDay(dayVars[j].domain[dayVars[j].selectedIndex]);
-		cout<<classname[j] <<','<< timeVars[j].domain[timeVars[j].selectedIndex]<<','<<roomVars[j].domain[roomVars[j].selectedIndex]<<','<<day<<','<<duration[j]<<endl;
+		cout<<classname[j] <<','<< timeVars[j].domain[timeVars[j].selectedIndex]<<','<<constr[roomVars[j].domain[roomVars[j].selectedIndex]].roomName<<','<<day<<','<<duration[j]<<endl;
 	}
 }
 
